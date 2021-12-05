@@ -33,7 +33,7 @@ class SocketService {
           socket.roomID = roomID;
           this.onRegister(socket, userData)
 
-          this.onUsersChange(socket, roomID);
+          this.onUsersChange(roomID);
 
           socket.on('disconnect', () => {
               this.onDisconnect(socket);
@@ -108,7 +108,7 @@ class SocketService {
       this.io.users[roomID][userID] = userData;
     }
 
-    this.onUsersChange(socket);
+    this.onUsersChange(roomID);
   };
 
 
