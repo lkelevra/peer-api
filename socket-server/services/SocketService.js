@@ -20,6 +20,7 @@ class SocketService {
 	});
     this.io.users = {};
     this.io.on("connection", (socket) => {
+
       socket.on('join-room', (userData) => {
 
           const { roomID, userID } = userData;
@@ -34,10 +35,10 @@ class SocketService {
           this.onUsersChange(socket);
 
           socket.on('disconnect', () => {
-              //this.onDisconnect(socket);
+              
               console.log("socket.name => ", socket.name)
               console.log("sockets => ", this.io.users)
-              delete this.io.users[socket.name];
+              this.onDisconnect(socket);
               socket.to(roomID).broadcast.emit('user-disconnected', userID);
           });
           socket.on('broadcast-message', (message) => {
@@ -127,7 +128,7 @@ class SocketService {
     this.onUsersChange();
   };
 
-  //onDisconnect = (socket) => {
+  onDisconnect = (socket) => {
     delete this.io.users[socket.name];
     delete this.io.users[socket.name];
     console.log(
