@@ -31,12 +31,7 @@ class SocketService {
 
           console.log("=== REGISTRANDO NUEVO USUARIO ===", userData);
           socket.roomID = roomID;
-          if(this.io.users[roomID]){
-            this.io.users[roomID][userID] = userData;
-          }else{
-            this.io.users[roomID] = {}
-            this.io.users[roomID][userID] = userData;
-          }
+          this.onRegister(socket, userData)
 
           this.onUsersChange(socket);
 
@@ -106,10 +101,17 @@ class SocketService {
     socket.name = name;
     socket.userID = userID;
     socket.name = name;
-    this.io.users[roomID][name] = userData;
+    if(this.io.users[roomID]){
+            this.io.users[roomID][userID] = userData;
+    }else{
+      this.io.users[roomID] = {}
+      this.io.users[roomID][userID] = userData;
+    }
 
     this.onUsersChange(socket);
   };
+
+
 
   getUsers = (socket) => {
     const users = [];
