@@ -56,7 +56,7 @@ class SocketService {
 
       });
 
-      socket.on("register", (name) => this.onRegister(socket, name));
+      //socket.on("register", (name) => this.onRegister(socket, name));
       socket.on("set-peer-id", (userId) => this.onSetPeerId(socket, userId));
       socket.on("call", (name) => this.onCall(socket, name));
       socket.on("reject-call", (name) =>
