@@ -98,7 +98,7 @@ class SocketService {
   onRegister = (socket, userData) => {
     console.log("Registered", userData);
     const { name, roomID, userID } = userData 
-    socket.name = name;
+    socket.roomID = roomID;
     socket.userID = userID;
     socket.name = name;
     if(this.io.users[roomID]){
