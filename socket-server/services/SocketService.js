@@ -125,7 +125,7 @@ class SocketService {
   };
 
   onUsersChange = (roomID) => {
-    this.io.to(roomID).broadcast.emit("users-change", this.getUsers(roomID));
+    this.io.to(roomID).emit("users-change", this.getUsers(roomID));
   };
 
   onSetPeerId = (socket, peerId) => {
