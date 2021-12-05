@@ -37,9 +37,6 @@ class SocketService {
           this.onUsersChange(socket);
 
           socket.on('disconnect', () => {
-              
-              console.log("socket => ", socket)
-              console.log("sockets => ", this.io.users)
               this.onDisconnect(socket);
               socket.to(roomID).broadcast.emit('user-disconnected', userID);
           });
