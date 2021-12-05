@@ -122,6 +122,7 @@ class SocketService {
         users.push(this.io.users[roomID][key]);
       });
     }
+    console.log("USUARIOS =====  ", users)
     return users;
   };
 
