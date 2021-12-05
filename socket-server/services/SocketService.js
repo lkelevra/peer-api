@@ -103,10 +103,10 @@ class SocketService {
     socket.name = name;
     socket.join(roomID);
     if(this.io.users[roomID]){
-            this.io.users[roomID][userID] = userData;
+            this.io.users[roomID][name] = userData;
     }else{
       this.io.users[roomID] = {}
-      this.io.users[roomID][userID] = userData;
+      this.io.users[roomID][name] = userData;
     }
 
     this.onUsersChange(roomID);
