@@ -9,7 +9,15 @@ class SocketService {
   }
 
   listen = (server) => {
-    this.io = socketio(server);
+    this.io = socketio(server, {
+//transports: ['websocket','polling'],
+	  cors: {
+    		origin: "*",
+	    	methods: ["GET", "POST"],
+		credentials: true
+
+  	  }
+	});
     this.io.users = {};
     this.io.on("connection", (socket) => {
       socket.on("register", (username) => this.onRegister(socket, username));

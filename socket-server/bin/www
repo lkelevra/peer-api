@@ -7,6 +7,8 @@
 var app = require("../app");
 var debug = require("debug")("peer-api:server");
 var http = require("http");
+const fs = require('fs');
+
 const SocketService = require("../services/SocketService");
 
 /**
@@ -20,7 +22,10 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer({ 
+//                key: fs.readFileSync('privkey.pem'),
+//                cert: fs.readFileSync('fullchain.pem') 
+             },app);
 
 SocketService.listen(server);
 app.set("socket", SocketService);
