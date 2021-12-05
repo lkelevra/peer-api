@@ -141,11 +141,10 @@ class SocketService {
   };
 
   onDisconnect = (socket) => {
+
     delete this.io.users[socket.roomID][socket.name];
     console.log(
-      `${Date(Date.now()).toLocaleString()} ID:${
-        socket.name
-      } user disconnected`
+      `${Date(Date.now()).toLocaleString()} Nombre:${socket.name}  ${socket.roomID} desconectado`
     );
     this.onUsersChange(socket.roomID);
   };
