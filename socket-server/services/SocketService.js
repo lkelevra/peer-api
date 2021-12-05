@@ -31,9 +31,12 @@ class SocketService {
 
           console.log("=== REGISTRANDO NUEVO USUARIO ===", userData);
           socket.roomID = roomID;
-
-
-          this.io.users[roomID][userID] = userData;
+          if(this.io.users[roomID]){
+            this.io.users[roomID][userID] = userData;
+          }else{
+            this.io.users[roomID] = {}
+            this.io.users[roomID][userID] = userData;
+          }
 
           this.onUsersChange(socket);
 
