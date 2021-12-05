@@ -30,10 +30,11 @@ class SocketService {
           socket.to(roomID).broadcast.emit('new-user-connect', userData);
 
           console.log("=== REGISTRANDO NUEVO USUARIO ===", userData);
-          
-          socket.name = name;
+          socket.roomID = roomID;
 
-          this.io.users[name] = userData;
+
+          this.io.users[roomID][userID] = userData;
+
           this.onUsersChange(socket);
 
           socket.on('disconnect', () => {
@@ -53,11 +54,13 @@ class SocketService {
               socket.to(roomID).broadcast.emit('user-video-off', value);
           });
 
+          socket.on("call", (user) => this.onCall(socket, user));
+
       });
 
-      //socket.on("register", (name) => this.onRegister(socket, name));
+      socket.on("register", (userData) => this.onRegister(socket, userData));
       socket.on("set-peer-id", (userId) => this.onSetPeerId(socket, userId));
-      socket.on("call", (name) => this.onCall(socket, name));
+      //socket.on("call", (name) => this.onCall(socket, name));
       socket.on("reject-call", (name) =>
         this.onRejectCall(socket, name)
       );
@@ -84,37 +87,37 @@ class SocketService {
     }
   };
 
-  onCall = (socket, name) => {
-    if (this.io.users[name]) {
+  onCall = (socket, user) => {
+    if (this.io.users[user.name]) {
       this.io
-        .to(this.io.users[name].socketId)
+        .to(this.io.users[user.name].socketId)
         .emit("call", this.io.users[socket.name]);
     } else {
       socket.emit("not-available", name);
     }
   };
 
-  onRegister = (socket, name) => {
-    console.log("Registered", name);
+  onRegister = (socket, userData) => {
+    console.log("Registered", userData);
+    const { name, roomID, userID } = userData 
     socket.name = name;
-    this.io.users[name] = {
-      name,
-      peerId: "",
-      socketId: socket.id,
-    };
+    socket.userID = userID;
+    socket.name = name;
+    this.io.users[roomID][name] = userData;
+
     this.onUsersChange(socket);
   };
 
-  getUsers = () => {
+  getUsers = (socket) => {
     const users = [];
-    Object.keys(this.io.users).forEach((key) => {
-      users.push(this.io.users[key]);
+    Object.keys(this.io.users[socket.roomID]).forEach((key) => {
+      users.push(this.io.users[socket.roomID][key]);
     });
     return users;
   };
 
   onUsersChange = (socket) => {
-    this.io.emit("users-change", this.getUsers());
+    this.io.emit("users-change", this.getUsers(socket));
   };
 
   onSetPeerId = (socket, peerId) => {
