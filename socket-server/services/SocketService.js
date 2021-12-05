@@ -113,7 +113,7 @@ class SocketService {
 
 
 
-  getUsers = (socket) => {
+  getUsers = (roomID) => {
     const users = [];
     console.log("USUARIOS DEL ROOM ", roomID)
     if(this.io.users[roomID]){
