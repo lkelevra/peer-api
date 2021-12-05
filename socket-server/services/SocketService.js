@@ -101,6 +101,7 @@ class SocketService {
     socket.roomID = roomID;
     socket.userID = userID;
     socket.name = name;
+    socket.join(roomID);
     if(this.io.users[roomID]){
             this.io.users[roomID][userID] = userData;
     }else{
