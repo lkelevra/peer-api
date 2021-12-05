@@ -36,7 +36,7 @@ class SocketService {
 
           socket.on('disconnect', () => {
               
-              console.log("socket.name => ", socket.name)
+              console.log("socket => ", socket)
               console.log("sockets => ", this.io.users)
               this.onDisconnect(socket);
               socket.to(roomID).broadcast.emit('user-disconnected', userID);
@@ -130,7 +130,7 @@ class SocketService {
 
   onDisconnect = (socket) => {
     delete this.io.users[socket.name];
-    delete this.io.users[socket.name];
+
     console.log(
       `${Date(Date.now()).toLocaleString()} ID:${
         socket.name
