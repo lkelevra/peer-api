@@ -116,7 +116,6 @@ class SocketService {
 
   getUsers = (roomID) => {
     const users = [];
-    console.log("USUARIOS DEL ROOM RAW ", this.io.users)
     console.log("USUARIOS DEL ROOM ", roomID)
     if(this.io.users[roomID]){
       Object.keys(this.io.users[roomID]).forEach((key) => {
