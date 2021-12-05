@@ -23,15 +23,17 @@ class SocketService {
 
       socket.on('join-room', (userData) => {
 
-          const { roomID, userID } = userData;
+          const { roomID, userID, name } = userData;
 
           socket.join(roomID);
 
           socket.to(roomID).broadcast.emit('new-user-connect', userData);
 
-           console.log("=== REGISTRANDO NUEVO USUARIO ===", userData);
+          console.log("=== REGISTRANDO NUEVO USUARIO ===", userData);
           
-          this.io.users[userData.name] = userData;
+          socket.name = name;
+
+          this.io.users[name] = userData;
           this.onUsersChange(socket);
 
           socket.on('disconnect', () => {
