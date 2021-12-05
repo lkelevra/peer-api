@@ -33,7 +33,7 @@ class SocketService {
           socket.roomID = roomID;
           this.onRegister(socket, userData)
 
-          this.onUsersChange(socket);
+          this.onUsersChange(socket, roomID);
 
           socket.on('disconnect', () => {
               this.onDisconnect(socket);
@@ -115,17 +115,17 @@ class SocketService {
 
   getUsers = (socket) => {
     const users = [];
-    console.log("USUARIOS DEL ROOM ", socket.roomID)
-    if(this.io.users[socket.roomID]){
-      Object.keys(this.io.users[socket.roomID]).forEach((key) => {
-        users.push(this.io.users[socket.roomID][key]);
+    console.log("USUARIOS DEL ROOM ", roomID)
+    if(this.io.users[roomID]){
+      Object.keys(this.io.users[roomID]).forEach((key) => {
+        users.push(this.io.users[roomID][key]);
       });
     }
     return users;
   };
 
-  onUsersChange = (socket) => {
-    this.io.emit("users-change", this.getUsers(socket));
+  onUsersChange = (roomID) => {
+    this.io.to(roomID).broadcast.emit("users-change", this.getUsers(roomID));
   };
 
   onSetPeerId = (socket, peerId) => {
