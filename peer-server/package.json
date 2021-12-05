@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node peer.js",
+   "peer": "node peer.js"
   },
   "name": "peer-server",
   "version": "1.0.0",

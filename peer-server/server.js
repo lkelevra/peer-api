@@ -4,14 +4,14 @@ const { ExpressPeerServer } = require("peer");
 
 const app = express();
 
-app.get("/", (req, res, next) => res.send("Hello world!"));
+app.get("/", (req, res, next) => res.send("Video Server online"));
 
 const http = require("http");
 
 const server = http.createServer(app);
 const peerServer = ExpressPeerServer(server, {
-  debug: true,
-  path: "/",
+  debug: 3,
+  path: "/myapp",
 });
 
 app.use("/peerjs", peerServer);
