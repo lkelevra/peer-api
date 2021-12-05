@@ -20,6 +20,27 @@ class SocketService {
 	});
     this.io.users = {};
     this.io.on("connection", (socket) => {
+      socket.on('join-room', (userData) => {
+          const { roomID, userID } = userData;
+          socket.join(roomID);
+          socket.to(roomID).broadcast.emit('new-user-connect', userData);
+          socket.on('disconnect', () => {
+              socket.to(roomID).broadcast.emit('user-disconnected', userID);
+          });
+          socket.on('broadcast-message', (message) => {
+              socket.to(roomID).broadcast.emit('new-broadcast-messsage', {...message, userData});
+          });
+          // socket.on('reconnect-user', () => {
+          //     socket.to(roomID).broadcast.emit('new-user-connect', userData);
+          // });
+          socket.on('display-media', (value) => {
+              socket.to(roomID).broadcast.emit('display-media', {userID, value });
+          });
+          socket.on('user-video-off', (value) => {
+              socket.to(roomID).broadcast.emit('user-video-off', value);
+          });
+      });
+          
       socket.on("register", (username) => this.onRegister(socket, username));
       socket.on("set-peer-id", (peerId) => this.onSetPeerId(socket, peerId));
       socket.on("call", (username) => this.onCall(socket, username));
